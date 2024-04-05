@@ -15,7 +15,10 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options =>
+{
+    options.EnableEndpointRouting = false;
+});
 
 var app = builder.Build();
 
@@ -37,6 +40,11 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "jokes",
+    pattern: "Jokes",
+    defaults: new { controller = "Jokes", action = "Index" });
 
 app.MapControllerRoute(
     name: "default",
